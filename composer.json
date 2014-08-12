@@ -1,0 +1,15 @@
+{
+    "name": "qshurick/acl",
+    "description": "ZF2 Acl wrapper",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.3.*",
+        "qshurick/logger": "0.1.x",
+        "doctrine/doctrine-orm-module": "0.7.*"
+    }
+}
