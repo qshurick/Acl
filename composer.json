@@ -12,6 +12,9 @@
         "qshurick/logger": "0.1.x",
         "doctrine/doctrine-orm-module": "0.7.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
     "autoload": {
         "psr-4": {
             "Acl\\": "src/"

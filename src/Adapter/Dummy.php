@@ -8,32 +8,19 @@
 
 namespace Acl\Adapter;
 
+use Acl\Acl;
 
-use Acl\AclAbstractFactory;
-use Acl\AclInterface;
-use Acl\Adapter\Dummy\Acl;
-use Acl\InstallationAclInterface;
+class Dummy extends \Acl\Adapter\AbstractAdapter {
 
-class Dummy extends AclAbstractFactory {
-
-    protected $acl;
-
-    public function __construct($userId) {
-        $this->acl = new Acl($userId);
-    }
-
-
-    /**
-     * @return AclInterface
-     */
-    public function getAcl() {
-        return $this->acl;
+    protected function _isAllowed($roleName, $resources) {
+        return true;
     }
 
     /**
-     * @return InstallationAclInterface
+     * @param int $userId
+     * @return string|bool
      */
-    public function getInstallationAcl() {
-        return $this->acl;
+    public function getUserRoleById($userId) {
+        return Acl::DEFAULT_ROLE;
     }
 }
