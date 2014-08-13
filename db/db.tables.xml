@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="${module} initialize table acl_user" author="${qshurick}">
+        <createTable tableName="acl_user">
+            <column name="user_id" type="int(10)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" type="int(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="${module} initialize table roles" author="${qshurick}">
+        <createTable tableName="acl_role">
+            <column name="id" type="int(10)" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="enum('user','system')" defaultValue="system">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="${module} initialize table role structure" author="${qshurick}">
+        <createTable tableName="acl_structure">
+            <column name="id" type="int(10)" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" type="int(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resource" type="varchar(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="privilege" type="varchar(140)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="${module} initialize table role hierarchy" author="${qshurick}">
+        <createTable tableName="acl_hierarchy">
+            <column name="id" type="int(10)" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" type="int(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="int(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+</databaseChangeLog>

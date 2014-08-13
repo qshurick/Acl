@@ -41,6 +41,12 @@ class AclRole {
     protected $type;
 
     /**
+     * @var AclRole[]
+     *
+     */
+    protected $parents;
+
+    /**
      * @param string $name
      */
     public function setName($name) {

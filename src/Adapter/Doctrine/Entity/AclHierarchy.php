@@ -42,29 +42,16 @@ class AclHierarchy {
     protected $role;
 
     /**
-     * @var AclRole[]
-     * @OneToMany(targetEntity="AclRole")
+     * @var int
+     * @Column(type="integer")
      */
-    protected $parents;
+    protected $parentId;
 
-    /**
-     * @return AclRole[]
-     */
-    public function getParents() {
-        return $this->parents;
-    }
-
-    /**
+        /**
      * @return AclRole
      */
     public function getRole() {
         return $this->role;
     }
 
-    /**
-     * @param AclRole $parent
-     */
-    public function addParent($parent) {
-
-    }
 } 
