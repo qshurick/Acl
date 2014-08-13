@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 /**
@@ -32,6 +34,20 @@ class AclStructure {
      * @Column(type="integer", name="role_id")
      */
     protected $roleId;
+
+    /**
+     * @var AclRole
+     * @ManyToOne(targetEntity="AclRole", inversedBy="structure")
+     * @JoinColumn(name="role_id", referencedColumnName="id")
+     */
+    protected $role;
+
+    /**
+     * @return AclRole
+     */
+    public function getRole() {
+        return $this->role;
+    }
 
     /**
      * @var string

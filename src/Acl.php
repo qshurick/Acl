@@ -64,7 +64,7 @@ class Acl {
     /** @var AclOptions */
     protected $options;
 
-    /** @var AclAdapter */
+    /** @var Adapter\AdapterInterface */
     protected $adapter;
 
     /** @var int */
@@ -97,14 +97,14 @@ class Acl {
     }
 
     /**
-     * @param \Acl\AclAdapter $adapter
+     * @param \Acl\Adapter\AdapterInterface $adapter
      */
     public function setAdapter($adapter) {
         $this->adapter = $adapter;
     }
 
     /**
-     * @return \Acl\AclAdapter
+     * @return \Acl\Adapter\AdapterInterface
      */
     public function getAdapter() {
         return $this->adapter;

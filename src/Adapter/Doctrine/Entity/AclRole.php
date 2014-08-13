@@ -48,7 +48,7 @@ class AclRole {
 
     /**
      * @var AclStructure[]
-     * @OneToMany(targetEntity="AclStructure", mappedBy="roleId")
+     * @OneToMany(targetEntity="AclStructure", mappedBy="role")
      */
     protected $structure;
 

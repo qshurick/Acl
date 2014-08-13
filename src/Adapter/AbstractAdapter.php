@@ -9,9 +9,22 @@
 namespace Acl\Adapter;
 
 
+use Acl\AdapterOptions;
+use Logger\Logger;
+use Logger\LoggerInterface;
+
 abstract class AbstractAdapter implements AdapterInterface {
     /** @var AdapterOptions */
     protected $options;
+
+    /** @var LoggerInterface */
+    protected static $logger;
+
+    public function __construct($options = array()) {
+        static::$logger = Logger::getLogger(get_class($this));
+        $this->setOptions($options);
+    }
+
 
     /**
      * @param \Acl\AdapterOptions|array $options
@@ -24,7 +37,11 @@ abstract class AbstractAdapter implements AdapterInterface {
             $this->options = new \Acl\AdapterOptions($options);
         else
             throw new \Acl\Exception\RuntimeException("Bad adapter options");
+
+        $this->init();
     }
+
+    protected function init() {}
 
     /**
      * @return \Acl\AdapterOptions
