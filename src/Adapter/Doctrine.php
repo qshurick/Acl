@@ -32,13 +32,6 @@ class Doctrine extends AbstractAdapter {
         parent::setOptions($options);
     }
 
-    protected function init() {
-        /** @var DoctrineOptions $options */
-        $options = $this->getOptions();
-        if ($options->getEntityManager() === null)
-            throw new RuntimeException("EntityManager not found in DoctrineOptions");
-    }
-
     /**
      * @return \Doctrine\ORM\EntityManager
      * @throws \Acl\Exception\RuntimeException
