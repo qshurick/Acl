@@ -12,23 +12,25 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class AclUser
  * @package Acl\Adapter\Doctrine\Entity
  * @Entity()
+ * @Table(name="acl_user")
  */
 class AclUser {
 
     /**
      * @var int
-     * @Column(type="integer")
+     * @Column(type="integer", name="user_id")
      * @Id()
      */
     protected $userId;
     /**
      * @var int
-     * @Column(type="integer")
+     * @Column(type="integer", name="role_id")
      */
     protected $roleId;
     /**

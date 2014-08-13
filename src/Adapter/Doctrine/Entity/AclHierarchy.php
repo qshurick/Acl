@@ -11,14 +11,13 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class AclHierarchy
  * @package Acl\Adapter\Doctrine\Entity
  * @Entity()
+ * @Table(name="acl_hierarchy")
  */
 class AclHierarchy {
     /**
@@ -30,28 +29,45 @@ class AclHierarchy {
     protected $id;
     /**
      * @var int
-     * @Column(type="integer")
+     * @Column(type="integer", name="role_id")
      */
     protected $roleId;
 
     /**
-     * @var AclRole
-     * @OneToOne(targetEntity="AclRole")
-     * @JoinColumn(name="role_id", referencedColumnName="id")
-     */
-    protected $role;
-
-    /**
-     * @var int
-     * @Column(type="integer")
+     * @var AclRole[]
+     * @Column(type="integer", name="parent_id")
      */
     protected $parentId;
 
-        /**
-     * @return AclRole
+
+    /**
+     * @param \Acl\Adapter\Doctrine\Entity\AclRole[] $parentId
      */
-    public function getRole() {
-        return $this->role;
+    public function setParentId($parentId) {
+        $this->parentId = $parentId;
     }
 
-} 
+    /**
+     * @param int $roleId
+     */
+    public function setRoleId($roleId) {
+        $this->roleId = $roleId;
+    }
+
+    /**
+     * @return \Acl\Adapter\Doctrine\Entity\AclRole[]
+     */
+    public function getParentId() {
+        return $this->parentId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRoleId() {
+        return $this->roleId;
+    }
+
+
+
+}

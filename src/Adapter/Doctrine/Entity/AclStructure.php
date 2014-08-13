@@ -11,13 +11,13 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class AclStructure
  * @package Acl\Adapter\Doctrine\Entity
  * @Entity()
+ * @Table(name="acl_structure")
  */
 class AclStructure {
     /**
@@ -29,14 +29,10 @@ class AclStructure {
     protected $id;
     /**
      * @var int
-     * @Column(type="integer")
+     * @Column(type="integer", name="role_id")
      */
     protected $roleId;
-    /**
-     * @var AclRole
-     * @OneToOne(targetEntity="AclRole", fetch="LAZY", mappedBy="id")
-     */
-    protected $role;
+
     /**
      * @var string
      * @Column(type="string")
@@ -89,13 +85,5 @@ class AclStructure {
     public function getRoleId() {
         return $this->roleId;
     }
-
-    /**
-     * @return \Acl\Adapter\Doctrine\Entity\AclRole
-     */
-    public function getRole() {
-        return $this->role;
-    }
-
 
 }

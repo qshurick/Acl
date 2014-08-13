@@ -11,11 +11,17 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
 
 /**
  * Class AclRole
  * @package Acl\Adapter\Doctrine\Entity
  * @Entity()
+ * @Table(name="acl_role")
  */
 class AclRole {
 
@@ -41,10 +47,35 @@ class AclRole {
     protected $type;
 
     /**
+     * @var AclStructure[]
+     * @OneToMany(targetEntity="AclStructure", mappedBy="roleId")
+     */
+    protected $structure;
+
+    /**
      * @var AclRole[]
-     *
+     * @ManyToMany(targetEntity="AclRole")
+     * @JoinTable(name="acl_hierarchy",
+     *      joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="parent_id", referencedColumnName="id")}
+     * )
      */
     protected $parents;
+
+    /**
+     * @return \Acl\Adapter\Doctrine\Entity\AclRole[]
+     */
+    public function getParents() {
+        return $this->parents;
+    }
+
+    /**
+     * @return \Acl\Adapter\Doctrine\Entity\AclStructure[]
+     */
+    public function getStructure() {
+        return $this->structure;
+    }
+
 
     /**
      * @param string $name
