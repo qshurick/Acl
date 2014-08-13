@@ -29,7 +29,7 @@ class Doctrine extends AbstractAdapter {
     public function setOptions($options) {
         if (is_array($options))
             $options = new DoctrineOptions($options);
-        parent::getOptions($options);
+        parent::setOptions($options);
     }
 
     protected function init() {
