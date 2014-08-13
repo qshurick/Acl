@@ -11,5 +11,10 @@
         "zendframework/zendframework": "2.3.*",
         "qshurick/logger": "0.1.x",
         "doctrine/doctrine-orm-module": "0.7.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acl\\": "src/"
+        }
     }
 }
