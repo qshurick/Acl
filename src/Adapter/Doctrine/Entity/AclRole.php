@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Class AclRole
@@ -63,7 +64,7 @@ class AclRole {
     protected $parents;
 
     /**
-     * @return \Acl\Adapter\Doctrine\Entity\AclRole[]
+     * @return PersistentCollection of \Acl\Adapter\Doctrine\Entity\AclRole[]
      */
     public function getParents() {
         return $this->parents;

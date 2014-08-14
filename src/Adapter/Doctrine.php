@@ -13,6 +13,7 @@ use Acl\Adapter\Doctrine\DoctrineOptions;
 use Acl\Adapter\Doctrine\Entity\AclRole;
 use Acl\Adapter\Doctrine\Entity\AclStructure;
 use Acl\Adapter\Doctrine\Entity\AclUser;
+use Acl\Exception\RoleNotFoundException;
 use Acl\Exception\RuntimeException;
 use Zend\Debug\Debug;
 use Zend\Permissions\Acl\Acl;
@@ -85,7 +86,7 @@ class Doctrine extends AbstractAdapter {
         $repo = $em->getRepository('\Acl\Adapter\Doctrine\Entity\AclUser');
 
         /** @var AclUser $aclUser */
-        $aclUser = $repo->findOneBy(array( 'user_id' => $userId ));
+        $aclUser = $repo->findOneBy(array( 'userId' => $userId ));
         if ($aclUser === null) {
             throw new RuntimeException("User #$userId not found or doesn't have any permission.");
         }
@@ -174,5 +175,64 @@ class Doctrine extends AbstractAdapter {
             }
         }
         return $privileges;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function addUser($userId) {
+        $em = $this->getEntityManager();
+        $repo = $em->getRepository('\Acl\Adapter\Doctrine\Entity\AclUser');
+        $existedUser = $repo->findBy(array(
+            'userId' => $userId
+        ));
+        if (!$existedUser) {
+            $role = new AclRole();
+            $role->setType(AclRole::USER_ROLE);
+            $role->setName($this->generateUserRoleName($userId));
+
+            $em->persist($role);
+            $em->flush($role);
+
+            $user = new AclUser();
+            $user->setUserId($userId);
+            $user->setRole($role);
+
+            $em->persist($user);
+            $em->flush($user);
+        }
+    }
+
+    private function generateUserRoleName($userId) {
+        return "user-$userId-" . md5(time());
+    }
+
+    /**
+     * @param string $roleName
+     * @param int $userId
+     * @throws RoleNotFoundException
+     */
+    public function grantRoleToUser($roleName, $userId) {
+        $em = $this->getEntityManager();
+        $roleRepo = $em->getRepository('\Acl\Adapter\Doctrine\Entity\AclRole');
+        /** @var \Acl\Adapter\Doctrine\Entity\AclRole $role */
+        $role = $roleRepo->findOneBy(array('name' => $roleName));
+        if ($role === null) {
+            static::$logger->error("Role '$roleName' not found for granting to user #$userId");
+            throw new RoleNotFoundException("Role '$roleName' not found");
+        }
+        /** @var \Acl\Adapter\Doctrine\Entity\AclRole $userRole */
+        $userRole = $roleRepo->findOneBy(array(
+            'name' => $this->getUserRoleById($userId)
+        ));
+        if ($userRole === null) {
+            static::$logger->error("User role '$roleName' not found");
+            throw new RoleNotFoundException("User role '$roleName' not found");
+        }
+        if (!$userRole->getParents()->contains($role)) {
+            $userRole->getParents()->add($role);
+            $em->flush($userRole);
+
+        }
     }
 }

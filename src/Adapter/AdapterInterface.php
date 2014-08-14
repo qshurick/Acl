@@ -11,6 +11,7 @@ namespace Acl\Adapter;
 
 use Acl\AdapterOptions;
 use Acl\Exception\RuntimeException;
+use Acl\Exception\RoleNotFoundException;
 
 interface AdapterInterface {
     /**
@@ -37,4 +38,16 @@ interface AdapterInterface {
      * @param bool $force
      */
     public function refresh($force = false);
+
+    /**
+     * @param int $userId
+     */
+    public function addUser($userId);
+
+    /**
+     * @param string    $roleName
+     * @param int       $userId
+     * @throws RoleNotFoundException
+     */
+    public function grantRoleToUser($roleName, $userId);
 } 

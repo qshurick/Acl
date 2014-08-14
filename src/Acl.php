@@ -10,6 +10,7 @@ namespace Acl;
 
 
 use Acl\Adapter\AdapterInterface;
+use Acl\Exception\RoleNotFoundException;
 use Acl\Exception\RuntimeException;
 use Logger\Logger;
 use Logger\LoggerInterface;
@@ -169,5 +170,21 @@ class Acl {
      */
     public function getCurrentUserRole() {
         return $this->currentUserRole;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function addUser($userId) {
+        $this->getAdapter()->addUser($userId);
+    }
+
+    /**
+     * @param string $roleName
+     * @param int    $userId
+     * @throws RoleNotFoundException
+     */
+    public function grantRoleToUser($roleName, $userId) {
+        $this->getAdapter()->grantRoleToUser($roleName, $userId);
     }
 }

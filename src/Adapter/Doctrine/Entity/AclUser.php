@@ -62,10 +62,10 @@ class AclUser {
     }
 
     /**
-     * @param int $roleId
+     * @param AclRole $role
      */
-    public function setRoleId($roleId) {
-        $this->roleId = $roleId;
+    public function setRole($role) {
+        $this->role = $role;
     }
 
     /**
