@@ -63,8 +63,13 @@ class Doctrine extends AbstractAdapter {
 
         foreach ($resources as $resource => $privileges) {
             foreach ($privileges as $privilege) {
-                if (!$acl->isAllowed($roleName, $resource, $privilege))
-                    return false;
+                if (is_string($privilege)) {
+                    $acl->allow($role->getName(), $resource, $privilege);
+                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $privilege);
+                } else {
+                    $acl->allow($role->getName(), $resource, $stuff);
+                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $stuff);
+                }
             }
         }
         return true;
