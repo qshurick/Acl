@@ -15,6 +15,15 @@ class DoctrineOptions extends AdapterOptions {
     /** @var \Doctrine\ORM\EntityManager */
     protected $entityManager;
 
+    public function __construct($options = array()) {
+        if (is_array($options)) {
+            if (isset($options['entity_manager'])) {
+                $this->setEntityManager($options['entity_manager']);
+            }
+        }
+        parent::__construct($options);
+    }
+
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager
      * @return $this

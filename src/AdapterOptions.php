@@ -10,11 +10,20 @@ namespace Acl;
 
 
 use Zend\Cache\Storage\StorageInterface;
+use Zend\Cache\StorageFactory;
 
 class AdapterOptions {
 
     /** @var StorageInterface */
     protected $cacheStorage;
+
+    public function __construct($options = array()) {
+        if (is_array($options)) {
+            if (isset($options['cache'])) {
+                $this->setCacheStorage(StorageFactory::factory($options['cache']));
+            }
+        }
+    }
 
     /**
      * @param \Zend\Cache\Storage\StorageInterface $cacheStorage
