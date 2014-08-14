@@ -63,12 +63,12 @@ class Doctrine extends AbstractAdapter {
 
         foreach ($resources as $resource => $privileges) {
             foreach ($privileges as $privilege) {
-                if (is_string($privilege)) {
-                    $acl->allow($role->getName(), $resource, $privilege);
-                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $privilege);
-                } else {
-                    $acl->allow($role->getName(), $resource, $stuff);
-                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $stuff);
+                try {
+                    if (!$acl->isAllowed($roleName, $resource, $privilege))
+                        return false;
+                } catch (\Exception $ex) {
+                    static::$logger->error($ex);
+                    return false;
                 }
             }
         }
@@ -102,7 +102,7 @@ class Doctrine extends AbstractAdapter {
             $storage = $this->getOptions()->getCacheStorage();
             if ($storage->hasItem($roleName)) {
                 static::$logger->debug("Cache used for '$roleName'");
-                return $storage->getItem($roleName);
+                return unserialize($storage->getItem($roleName));
             }
         }
 
@@ -111,26 +111,32 @@ class Doctrine extends AbstractAdapter {
 
         /** @var AclRole $role */
         $role = $repo->findOneBy(array('name' => $roleName));
-        if ($role === null)
+        if ($role === null) {
             throw new RuntimeException("Role '$roleName' not found");
+        }
 
         $data = $this->grabPrivileges($role);
 
         static::$logger->debug("Prepare granted privileges: " . Debug::dump($data, null, false));
 
         $acl = new Acl();
+        $acl->addRole($roleName);
         foreach ($data as $resource => $privileges) {
+            $acl->addResource($resource);
             foreach ($privileges as $privilege => $stuff) {
-                if (is_string($privilege))
+                if (is_string($privilege)) {
                     $acl->allow($role->getName(), $resource, $privilege);
-                else
+                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $privilege);
+                } else {
                     $acl->allow($role->getName(), $resource, $stuff);
+                    static::$logger->debug($role->getName() . ":" . $resource . ":" . $stuff);
+                }
             }
         }
 
         if ($this->getOptions()->isCached()) {
             $storage = $this->getOptions()->getCacheStorage();
-            $storage->setItem($roleName, $acl);
+            $storage->setItem($roleName, serialize($acl));
         }
 
         return $acl;

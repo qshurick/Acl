@@ -61,7 +61,7 @@ abstract class AbstractAdapter implements AdapterInterface {
         if ($this->getOptions()->isCached()) {
             $storage = $this->getOptions()->getCacheStorage();
             if ($storage->hasItem($hash))
-                return $storage->getItem($hash);
+                return !!$storage->getItem($hash);
         }
 
         $result = $this->_isAllowed($roleName, $resources);
