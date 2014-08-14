@@ -46,8 +46,6 @@ class Acl {
 
             static::$instance = new self($adapter);
 
-            static::$logger->debug("Initialized with options: " . Debug::dump($options, null, false));
-
         } elseif ($adapterName !== null && static::$instance->getOptions()->getThrowRuntimeExceptions()) {
             static::$logger->error("Acl cannot be initialized twice.");
             throw new RuntimeException("Acl cannot be initialized twice.");

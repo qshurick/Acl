@@ -118,8 +118,6 @@ class Doctrine extends AbstractAdapter {
 
         $data = $this->grabPrivileges($role);
 
-        static::$logger->debug("Prepare granted privileges: " . Debug::dump($data, null, false));
-
         $acl = new Acl();
         $acl->addRole($roleName);
         foreach ($data as $resource => $privileges) {
