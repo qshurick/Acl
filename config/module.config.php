@@ -29,4 +29,18 @@ return array(
             )
         )
     ),
+
+    'service_manager' => array(
+        'aliases' => array(
+            'DaoAcl' => 'dao-acl.service.default_factory'
+        ),
+        'factories' => array(
+            'dao-acl.service.default_factory' => new \Acl\Service\AclFactory(),
+        )
+    ),
+    /*'controllers' => array(
+        'initializers' => array(
+            'Acl\Service\Initializer'
+        )
+    ),*/
 );
