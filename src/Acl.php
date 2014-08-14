@@ -187,4 +187,13 @@ class Acl {
     public function grantRoleToUser($roleName, $userId) {
         $this->getAdapter()->grantRoleToUser($roleName, $userId);
     }
+
+    /**
+     * @param string $roleName
+     * @param int    $userId
+     * @throws RoleNotFoundException
+     */
+    public function refuseRoleFromUser($roleName, $userId) {
+        $this->getAdapter()->refuseRoleFromUser($roleName, $userId);
+    }
 }

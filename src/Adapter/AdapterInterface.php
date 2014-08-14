@@ -50,4 +50,11 @@ interface AdapterInterface {
      * @throws RoleNotFoundException
      */
     public function grantRoleToUser($roleName, $userId);
+
+    /**
+     * @param string    $roleName
+     * @param int       $userId
+     * @throws RoleNotFoundException
+     */
+    public function refuseRoleFromUser($roleName, $userId);
 } 

@@ -235,4 +235,35 @@ class Doctrine extends AbstractAdapter {
 
         }
     }
+
+    /**
+     * @param string $roleName
+     * @param int $userId
+     * @throws RoleNotFoundException
+     */
+    public function refuseRoleFromUser($roleName, $userId) {
+        $em = $this->getEntityManager();
+        $roleRepo = $em->getRepository('\Acl\Adapter\Doctrine\Entity\AclRole');
+        /** @var \Acl\Adapter\Doctrine\Entity\AclRole $role */
+        $role = $roleRepo->findOneBy(array('name' => $roleName));
+        if ($role === null) {
+            static::$logger->notice("Role '$roleName' not found for refusal from user #$userId");
+        } else {
+            /** @var \Acl\Adapter\Doctrine\Entity\AclRole $userRole */
+            $userRole = $roleRepo->findOneBy(array(
+                'name' => $this->getUserRoleById($userId)
+            ));
+            if ($userRole === null) {
+                static::$logger->error("User role '$roleName' not found");
+                throw new RoleNotFoundException("User role '$roleName' not found");
+            }
+            if ($userRole->getParents()->contains($role)) {
+                $userRole->getParents()->removeElement($role);
+                $em->flush();
+            }
+        }
+
+    }
+
+
 }
